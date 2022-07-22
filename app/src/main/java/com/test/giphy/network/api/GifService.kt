@@ -11,7 +11,7 @@ interface GifService {
     suspend fun fetchPhotos(
         @Query("api_key") apiKey: String = ApiConstants.API_KEY,
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 2
+        @Query("limit") limit: Int = 20
 //        @Query("extras") extras: String = PHOTO_EXTRAS
     ): Gif
 

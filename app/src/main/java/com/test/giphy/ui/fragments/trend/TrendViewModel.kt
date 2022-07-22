@@ -19,19 +19,7 @@ class TrendViewModel @Inject constructor(
     private val repository: DataRepository
 ) : CoroutineViewModel() {
 
-    init {
-        getPhotos2()
-        Log.d("repo1",  "21")
-    }
-
     fun getPhotos() =
         repository.fetchGifs(viewModelScope).flowOn(Dispatchers.IO)
 
-    fun getPhotos2(){
-        launchSafely {
-           Log.d("repo1",  "21"+ (repository.photosClient.fetchGif() as ResultOf.Success).data.forEach {
-               Log.d("repo1",  "21"+ it.title)
-           })
-        }
-    }
 }

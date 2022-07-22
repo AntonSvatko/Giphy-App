@@ -29,7 +29,7 @@ class GifPagingSource(
             LoadResult.Page(
                 data = listItem,
                 prevKey = if (nextPage == 0) null else nextPage - 1,
-                nextKey = nextPage + 1
+                nextKey = nextPage + 20
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
