@@ -1,13 +1,15 @@
-package com.test.giphy
+package com.test.giphy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.test.giphy.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
     }
 }
-
-//DkAjlIz5K3wixMYCcy52mQMSOdXFZ2pD
