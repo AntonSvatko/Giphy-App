@@ -2,7 +2,7 @@ package com.test.giphy.ui.base.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.giphy.util.createCoroutineHandler
+import com.test.giphy.utill.createCoroutineHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

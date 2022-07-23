@@ -1,5 +1,6 @@
 package com.test.giphy.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,7 +16,7 @@ import com.test.giphy.databinding.ItemGifBinding
 
 class GifAdapter(
     private val width: Int,
-    private val callback: (Data) -> Unit,
+    private val callback: (Int) -> Unit,
 ) : PagingDataAdapter<Data, GifAdapter.GifHolder>(
     GifCallback()
 ) {
@@ -24,6 +25,12 @@ class GifAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Data) {
             binding.gifView.setGif(data, width)
+
+            binding.gifView.setOnClickListener {
+                Log.d("absoluteAdapterPosition", absoluteAdapterPosition.toString())
+                callback(absoluteAdapterPosition)
+            }
+
             binding.executePendingBindings()
         }
 

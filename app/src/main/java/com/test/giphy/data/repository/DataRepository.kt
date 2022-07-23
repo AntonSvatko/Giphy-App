@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
-    val photosClient: GifClient,
+    private val photosClient: GifClient,
 //    private val favoritesDao: FavoritesDao
 ) {
 

@@ -1,4 +1,4 @@
-package com.test.giphy.util
+package com.test.giphy.utill
 
 import android.app.Activity
 import android.graphics.Insets

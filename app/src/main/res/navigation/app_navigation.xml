@@ -9,5 +9,19 @@
         android:id="@+id/trendFragment"
         android:name="com.test.giphy.ui.fragments.trend.TrendFragment"
         android:label="TrendFragment"
-        tools:layout="@layout/fragment_trend"/>
+        tools:layout="@layout/fragment_trend">
+        <action
+            android:id="@+id/action_trendFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.test.giphy.ui.fragments.details.DetailsFragment"
+        android:label="DetailsFragment"
+        tools:layout="@layout/fragment_details">
+
+        <argument android:name="page"
+            app:argType="integer"/>
+    </fragment>
 </navigation>
