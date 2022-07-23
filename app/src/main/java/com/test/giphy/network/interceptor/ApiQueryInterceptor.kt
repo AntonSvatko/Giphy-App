@@ -14,7 +14,6 @@ class ApiQueryInterceptor : Interceptor {
             .build()
 
 
-
         val request = Request.Builder().url(url).build()
         Log.d("api1", request.url.toString())
         return chain.proceed(request)

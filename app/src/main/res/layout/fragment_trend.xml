@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:layout_height="match_parent"
             app:spanCount="3"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
     </FrameLayout>
 </layout>

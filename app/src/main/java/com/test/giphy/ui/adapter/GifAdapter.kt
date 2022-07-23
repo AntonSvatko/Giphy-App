@@ -1,6 +1,5 @@
 package com.test.giphy.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,11 +7,14 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemGifBinding
 
+
 class GifAdapter(
+    private val width: Int,
     private val callback: (Data) -> Unit,
 ) : PagingDataAdapter<Data, GifAdapter.GifHolder>(
     GifCallback()
@@ -20,13 +22,16 @@ class GifAdapter(
 
     inner class GifHolder(private val binding: ItemGifBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Data) {
-
-            Glide.with(itemView).load(item.images.previewGif.url).into(binding.gifView)
-
-            Log.d("gif1", item.title + " 21 ")
-
+        fun bind(data: Data) {
+            binding.gifView.setGif(data, width)
             binding.executePendingBindings()
+        }
+
+        private fun ShapeableImageView.setGif(gif: Data, width: Int){
+            Glide.with(this).load(gif.images.previewGif.url).centerCrop().into(this)
+
+            layoutParams.width = width/3
+            requestLayout()
         }
     }
 
