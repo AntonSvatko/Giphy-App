@@ -11,7 +11,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemGifBinding
-import com.test.giphy.utill.GlideListener
+import com.test.giphy.ui.adapter.glide.GlideListener
 
 
 class GifAdapter(

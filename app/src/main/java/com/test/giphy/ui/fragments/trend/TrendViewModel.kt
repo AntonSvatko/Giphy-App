@@ -19,7 +19,6 @@ class TrendViewModel @Inject constructor(
     private val repository: DataRepository
 ) : CoroutineViewModel() {
 
-    var savedAdapter: Boolean = false
     var listCreated: MutableLiveData<PagingData<Data>> = MutableLiveData()
 
     init {

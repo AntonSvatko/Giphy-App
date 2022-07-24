@@ -14,17 +14,8 @@ class GifPagingSource(
         return try {
             val nextPage = params.key ?: 0
             val response = photoApiService.fetchPhotos(offset = nextPage)
-            Log.d(
-                "retrofit1.1", response.data.size.toString()
-            )
+
             val listItem = response.data
-
-            Log.d("data11", response.data[0].title)
-            Log.d("data11",  response.data[1].title)
-
-            listItem.forEach {
-                Log.d("data1", it.title)
-            }
 
             LoadResult.Page(
                 data = listItem,

@@ -40,17 +40,11 @@ class TrendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.listCreated.observe(viewLifecycleOwner) {
+            binding.progressBar.visibility = View.GONE
             lifecycleScope.launch(Dispatchers.IO) {
                 adapter.submitData(it)
             }
         }
-
         binding.recyclerView.adapter = adapter
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        viewModel.savedAdapter = true
-    }
-
 }
