@@ -1,20 +1,31 @@
 package com.test.giphy.ui.fragments.details
 
+import android.R
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.paging.filter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.test.giphy.databinding.FragmentDetailsBinding
 import com.test.giphy.ui.adapter.ViewPagerAdapter
 import com.test.giphy.ui.fragments.trend.TrendViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -34,28 +45,19 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val adapter = ViewPagerAdapter()
         binding.viewPager.adapter = adapter
 
-
-        Log.d("adapter1", viewModel.adapter?.itemCount.toString())
-//        binding.viewPager.postDelayed({ binding.viewPager.setCurrentItem(args.page, false) }, 1000)
-
+        binding.viewPager.doOnPreDraw {
+            binding.viewPager.setCurrentItem(args.page, false)
+            binding.viewPager.visibility = View.VISIBLE
+        }
 
         lifecycleScope.launch {
-            viewModel.getPhotos().collectLatest {
+            viewModel.listCreated.collectLatest {
                 adapter.submitData(lifecycle, it)
             }
         }
-
-//        lifecycleScope.launch(Dispatchers.Main) {
-//            binding.viewPager.setCurrentItem(args.page, true)
-//            binding.viewPager.setCurrentItem(args.page, false)
-//            binding.viewPager.adapter = adapter
-//            delay(100)
-//        }
-
-        Log.d("args.page", args.page.toString())
     }
+
 }

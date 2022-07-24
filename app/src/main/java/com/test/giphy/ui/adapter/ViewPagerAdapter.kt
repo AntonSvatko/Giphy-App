@@ -1,5 +1,6 @@
 package com.test.giphy.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -27,16 +28,7 @@ class ViewPagerAdapter :
         private fun ShapeableImageView.setGif(gif: Data){
             Glide.with(this).load(gif.images.original.url).into(this)
         }
-
-//        private fun ShapeableImageView.setGif(gif: Data, width: Int) {
-//            Glide.with(this).load(gif.images.previewGif.url).centerCrop().into(this)
-//
-//            layoutParams.width = width / 3
-//            requestLayout()
-//        }
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewPagerHolder {
         val binding: ItemPagerBinding = DataBindingUtil.inflate(
