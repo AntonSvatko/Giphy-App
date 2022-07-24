@@ -3,30 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <import type="com.test.giphy.data.model.Data" />
-
         <variable
-            name="data"
-            type="Data" />
+            name="isImageVisible"
+            type="Boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="120dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="@{isImageVisible ? View.GONE : View.VISIBLE, default = visible}" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/gif_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_gravity="center"
+            android:adjustViewBounds="true"
             android:padding="1dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent" />
+            android:visibility="@{isImageVisible ? View.VISIBLE : View.INVISIBLE, default = invisible}"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8Percent" />
     </FrameLayout>
 
 </layout>

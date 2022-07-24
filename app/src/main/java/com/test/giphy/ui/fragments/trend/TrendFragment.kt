@@ -7,15 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.test.giphy.databinding.FragmentTrendBinding
 import com.test.giphy.ui.adapter.GifAdapter
-import com.test.giphy.utill.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -25,22 +21,11 @@ class TrendFragment : Fragment() {
     private val viewModel: TrendViewModel by activityViewModels()
 
     private val adapter: GifAdapter by lazy {
-        GifAdapter(requireActivity().getScreenWidth()) {
+        GifAdapter {
             val action = TrendFragmentDirections.actionTrendFragmentToDetailsFragment(it)
-//            lifecycleScope.launch {
-//                //Your adapter's loadStateFlow here
-//                adapter.loadStateFlow.distinctUntilChangedBy {
-//                    it.refresh
-//                }.collect {
-//                    viewModel.listCreated = flow {
-//                        emit(adapter.snapshot())
-//                    }
-//                }
-//            }
             findNavController().navigate(action)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,13 +39,8 @@ class TrendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.adapter?.let {
-            viewModel.adapter = it
-        } ?: viewModel.viewModelScope.launch {
-            viewModel.getPhotos().collectLatest {
-                viewModel.listCreated = flow {
-                    emit(it)
-                }
+        viewModel.listCreated.observe(viewLifecycleOwner) {
+            lifecycleScope.launch(Dispatchers.IO) {
                 adapter.submitData(it)
             }
         }
@@ -68,9 +48,9 @@ class TrendFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.adapter = adapter
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModel.savedAdapter = true
     }
 
 }

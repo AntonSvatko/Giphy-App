@@ -20,8 +20,8 @@
         android:name="com.test.giphy.ui.fragments.details.DetailsFragment"
         android:label="DetailsFragment"
         tools:layout="@layout/fragment_details">
-
-        <argument android:name="page"
-            app:argType="integer"/>
+        <argument
+            android:name="page"
+            app:argType="integer" />
     </fragment>
 </navigation>

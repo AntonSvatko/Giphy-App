@@ -1,6 +1,5 @@
 package com.test.giphy.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -12,10 +11,10 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemGifBinding
+import com.test.giphy.utill.GlideListener
 
 
 class GifAdapter(
-    private val width: Int,
     private val callback: (Int) -> Unit,
 ) : PagingDataAdapter<Data, GifAdapter.GifHolder>(
     GifCallback()
@@ -24,21 +23,21 @@ class GifAdapter(
     inner class GifHolder(private val binding: ItemGifBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Data) {
-            binding.gifView.setGif(data, width)
+            binding.isImageVisible = false
+            binding.gifView.setGif(data)
 
             binding.gifView.setOnClickListener {
-                Log.d("absoluteAdapterPosition", absoluteAdapterPosition.toString())
                 callback(absoluteAdapterPosition)
             }
 
             binding.executePendingBindings()
         }
 
-        private fun ShapeableImageView.setGif(gif: Data, width: Int){
-            Glide.with(this).load(gif.images.previewGif.url).centerCrop().into(this)
-
-            layoutParams.width = width/3
-            requestLayout()
+        private fun ShapeableImageView.setGif(gif: Data) {
+            Glide.with(this).load(gif.images.previewGif.url)
+                .listener(GlideListener {
+                    binding.isImageVisible = true
+                }).centerCrop().into(this)
         }
     }
 

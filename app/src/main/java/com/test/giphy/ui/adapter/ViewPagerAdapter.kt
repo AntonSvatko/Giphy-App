@@ -1,6 +1,5 @@
 package com.test.giphy.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,22 +10,27 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemPagerBinding
+import com.test.giphy.utill.GlideListener
 
 class ViewPagerAdapter :
     PagingDataAdapter<Data, ViewPagerAdapter.ViewPagerHolder>(
         GifCallback()
-    )  {
+    ) {
 
     inner class ViewPagerHolder(private val binding: ItemPagerBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Data) {
+            binding.isImageVisible = false
             binding.pagerGifView.setGif(data)
             binding.executePendingBindings()
         }
 
-        private fun ShapeableImageView.setGif(gif: Data){
-            Glide.with(this).load(gif.images.original.url).into(this)
+        private fun ShapeableImageView.setGif(gif: Data) {
+            Glide.with(this).load(gif.images.original.url)
+                .listener(GlideListener {
+                    binding.isImageVisible = true
+                }).into(this)
         }
     }
 
