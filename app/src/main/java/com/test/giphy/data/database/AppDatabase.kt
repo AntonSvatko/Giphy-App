@@ -10,5 +10,5 @@ import com.test.giphy.data.model.Data
 @TypeConverters(ImagesConverter::class)
 @Database(entities = [Data::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract val favoritesDao: GifDao
+    abstract val gifDao: GifDao
 }

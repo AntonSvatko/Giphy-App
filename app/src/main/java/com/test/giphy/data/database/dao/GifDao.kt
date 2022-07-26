@@ -15,6 +15,9 @@ abstract class GifDao {
 
 
     @Query("select * from gif_table order by id")
-    abstract fun getAllGifsLiveData(): PagingSource<Int, Data>
+    abstract fun getAllGifsPagingSource(): PagingSource<Int, Data>
+
+    @Query("select id from gif_table")
+    abstract suspend fun getGifIds(): List<String>
 
 }
