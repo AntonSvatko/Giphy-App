@@ -24,7 +24,7 @@ class GifPagingSourceSearch(
 
             val blackList = getSharedPref()
             val listItem = response.data.filter {
-                blackList?.contains(it.id) ?: true
+                !(blackList?.contains(it.id) ?: false)
             }
 
 
