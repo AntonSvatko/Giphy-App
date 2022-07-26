@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_details) {
     private val args: DetailsFragmentArgs by navArgs()
-    private lateinit var currentItem: Data
+    private var currentItem: Data? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +33,11 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_d
         }
 
         binding.delete.setOnClickListener {
-            viewModel.deleteGif(requireContext().cacheDir.absolutePath, currentItem)
+            currentItem?.let { item ->
+                viewModel.deleteGif(requireContext().cacheDir.absolutePath,
+                    item
+                )
+            }
         }
 
         binding.arrowBack.setOnClickListener {
