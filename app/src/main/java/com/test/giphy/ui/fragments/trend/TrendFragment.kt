@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.test.giphy.R
 import com.test.giphy.databinding.FragmentTrendBinding
@@ -28,7 +29,6 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.listCreated.observe(viewLifecycleOwner) {
-            binding.progressBar.visibility = View.GONE
             lifecycleScope.launch {
                 adapter.submitData(it)
                 binding.swipeRefresh.isRefreshing = false
@@ -39,13 +39,25 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             viewModel.update()
         }
 
+        adapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.NotLoading -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                is LoadState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                else -> {}
+            }
+        }
+
         binding.recyclerView.adapter = adapter
 
         searchView()
         snackBar()
     }
 
-    private fun searchView(){
+    private fun searchView() {
         binding.searchView.setOnQueryTextListener(object : DebouncedQueryTextListener() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.debounceTextChange(newText ?: "")
@@ -53,7 +65,7 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             }
         })
 
-        viewModel.isOnline.observe(viewLifecycleOwner){
+        viewModel.isOnline.observe(viewLifecycleOwner) {
             binding.searchView.isVisible = it
         }
     }
