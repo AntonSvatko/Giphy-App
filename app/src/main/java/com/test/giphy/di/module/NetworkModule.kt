@@ -1,6 +1,5 @@
 package com.test.giphy.di.module
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.test.giphy.di.qualifier.ApiOkHttpClient
@@ -22,9 +21,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApiService(retrofit: Retrofit): GifService {
-        Log.d(
-            "retrofit1", retrofit.baseUrl().query.toString()
-        )
         return retrofit.create(GifService::class.java)
     }
 
@@ -34,13 +30,8 @@ object NetworkModule {
         @ApiOkHttpClient okHttpClient: OkHttpClient,
         converterFactory: GsonConverterFactory
     ): Retrofit {
-
-        val retrofit = Retrofit.Builder().baseUrl(ApiConstants.API_LINK).client(okHttpClient)
+        return Retrofit.Builder().baseUrl(ApiConstants.API_LINK).client(okHttpClient)
             .addConverterFactory(converterFactory).build()
-        Log.d(
-            "retrofit1", retrofit.baseUrl().query.toString()
-        )
-        return retrofit
     }
 
     @Provides

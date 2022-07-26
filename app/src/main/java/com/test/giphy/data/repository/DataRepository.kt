@@ -20,10 +20,6 @@ class DataRepository @Inject constructor(
 
     suspend fun deleteGif(data: Data) = gifDao.deleteData(data)
 
-    suspend fun updateFavorite(data: Data) = gifDao.updateData(data)
-
-    suspend fun getFavorite(id: String) = gifDao.getData(id)
-
     private fun getAllGifsDB() = gifDao.getAllGifsLiveData()
 
     fun getAllGifs(scope: CoroutineScope, isOnline: Boolean, onOffline: (Boolean) -> Unit) = Pager(PagingConfig(pageSize = 20)) {

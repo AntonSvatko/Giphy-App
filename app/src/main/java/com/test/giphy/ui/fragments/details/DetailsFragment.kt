@@ -41,6 +41,7 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_d
         }
 
         binding.viewPager.adapter = adapter
+        binding.viewModel = viewModel
 
         binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(position, false)
@@ -49,8 +50,6 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_d
         viewModel.listCreated.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
         }
-
-        binding.viewModel = viewModel
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

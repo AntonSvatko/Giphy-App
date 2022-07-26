@@ -4,11 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.test.giphy.data.model.Data
 import com.test.giphy.data.model.Gif
-import com.test.giphy.network.api.GifService
 import com.test.giphy.network.const.ApiConstants
-import com.test.giphy.network.exception.EmptyResultException
 import com.test.giphy.utill.getSharedPref
-import retrofit2.Response
 
 abstract class BasePagingSource : PagingSource<Int, Data>() {
     fun blackList(response: Gif): List<Data> {

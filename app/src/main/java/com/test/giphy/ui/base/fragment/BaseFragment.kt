@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.test.giphy.R
 import com.test.giphy.ui.fragments.MainViewModel
 
 abstract class BaseFragment<T : ViewDataBinding>(private val resId: Int) : Fragment() {

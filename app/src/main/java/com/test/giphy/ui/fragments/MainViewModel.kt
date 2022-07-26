@@ -1,7 +1,6 @@
 package com.test.giphy.ui.fragments
 
 import android.graphics.drawable.Drawable
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -9,6 +8,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.test.giphy.data.model.Data
 import com.test.giphy.data.repository.DataRepository
 import com.test.giphy.ui.base.viewmodel.CoroutineViewModel
+import com.test.giphy.utill.Const
 import com.test.giphy.utill.putSharedPref
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun deleteGif(dir: String, data: Data) {
-        val name = data.id + ".gif"
+        val name = data.id + Const.EXTENSION_GIF
         val file = File(dir, name)
         viewModelScope.launch(Dispatchers.IO) {
             if (file.exists())
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
 
     fun downloadGif(dir: String, drawable: Drawable?, data: Data) {
         viewModelScope.launch(Dispatchers.IO) {
-            val name = data.id + ".gif"
+            val name = data.id + Const.EXTENSION_GIF
             val gifFile = File(dir, name)
             if (!gifFile.exists()) {
                 val byteBuffer = (drawable as GifDrawable).buffer

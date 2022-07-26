@@ -19,12 +19,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object OkHttpModule {
 
-//    @Provides
-//    @Singleton
-//    @PicassoOkHttpClient
-//    fun providePicassoClient(cache: Cache): OkHttpClient =
-//        OkHttpClient.Builder().cache(cache).build()
-
     @Provides
     @Singleton
     fun provideCache(file: File): Cache = Cache(file, 50 * 1024 * 1024)

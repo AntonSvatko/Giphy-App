@@ -1,8 +1,5 @@
 package com.test.giphy.utill
 
-import android.os.SystemClock
-import android.util.Log
-import android.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 
 abstract class DebouncedQueryTextListener :

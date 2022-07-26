@@ -2,6 +2,7 @@ package com.test.giphy.ui.fragments.trend
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -38,6 +39,13 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             viewModel.update()
         }
 
+        binding.recyclerView.adapter = adapter
+
+        searchView()
+        snackBar()
+    }
+
+    private fun searchView(){
         binding.searchView.setOnQueryTextListener(object : DebouncedQueryTextListener() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.debounceTextChange(newText ?: "")
@@ -45,8 +53,9 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             }
         })
 
-        binding.recyclerView.adapter = adapter
-        snackBar()
+        viewModel.isOnline.observe(viewLifecycleOwner){
+            binding.searchView.isVisible = it
+        }
     }
 
     private fun snackBar() {
