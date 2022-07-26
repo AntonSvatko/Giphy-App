@@ -10,7 +10,8 @@ import com.test.giphy.utill.getSharedPref
 class GifPagingSource(
     private val photoApiService: GifService,
     private val source: PagingSource<Int, Data>,
-    private val online: Boolean
+    private val online: Boolean,
+    private val isOnline: (Boolean) -> Unit
 ) : PagingSource<Int, Data>() {
 
     private var page: Int = 0
@@ -26,36 +27,26 @@ class GifPagingSource(
                 !(blackList?.contains(it.id) ?: false)
             }
 
-            if (online)
+            if (online) {
+                isOnline(true)
                 LoadResult.Page(
                     data = listItem,
                     prevKey = if (nextPage == 0) null else nextPage - 1,
                     nextKey = nextPage + 20
                 )
-            else
+            }
+            else {
+                isOnline(false)
                 source.load(params)
+            }
         } catch (e: Exception) {
             Log.d("Error1", e.toString())
+            isOnline(false)
             source.load(params)
         }
     }
 
-    override val keyReuseSupported: Boolean
-        get() = true
-
     override fun getRefreshKey(state: PagingState<Int, Data>): Int? {
-        Log.d("state1", "state1")
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.let { anchorPage ->
-                val pageIndex = state.pages.indexOf(anchorPage)
-                if (pageIndex == 0) {
-                    null
-                } else {
-                    state.pages[pageIndex - 1].nextKey
-                }
-            }
-        }
+        return null
     }
-
-
 }

@@ -39,15 +39,11 @@ class DetailsFragment : Fragment() {
 
         val adapter = ViewPagerAdapter { dir, drawable, data ->
             currentItem = data
-            binding.isDownloaded = data.isDownloaded
             viewModel.downloadGif(dir, drawable, data)
         }
 
         binding.delete.setOnClickListener {
             viewModel.deleteGif(requireContext().cacheDir.absolutePath, currentItem)
-            if (adapter.itemCount == 0) {
-                findNavController().popBackStack()
-            }
         }
 
         binding.arrowBack.setOnClickListener {
@@ -63,6 +59,9 @@ class DetailsFragment : Fragment() {
         viewModel.listCreated.observe(viewLifecycleOwner) {
             adapter.submitData(lifecycle, it)
         }
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

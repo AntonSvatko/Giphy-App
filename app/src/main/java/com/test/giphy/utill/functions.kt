@@ -1,6 +1,8 @@
 package com.test.giphy.utill
 
-import com.test.giphy.App
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.core.content.ContextCompat.getSystemService
 import com.test.giphy.App.Companion.BLACK_LIST_KEY
 import com.test.giphy.App.Companion.sharedPref
 import com.test.giphy.data.model.Data
@@ -34,4 +36,9 @@ fun putSharedPref(data: Data) {
     setData.add(data.id)
 
     sharedPref?.edit()?.putStringSet(BLACK_LIST_KEY, setData)?.apply()
+}
+
+private fun Context.isNetworkConnected(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    return cm!!.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
 }

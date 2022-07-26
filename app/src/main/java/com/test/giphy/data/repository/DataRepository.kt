@@ -1,6 +1,8 @@
 package com.test.giphy.data.repository
 
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.test.giphy.data.database.dao.GifDao
 import com.test.giphy.data.model.Data
 import com.test.giphy.network.GifClient
@@ -24,12 +26,14 @@ class DataRepository @Inject constructor(
 
     private fun getAllGifsDB() = gifDao.getAllGifsLiveData()
 
-    fun getAllGifs(scope: CoroutineScope, isOnline: Boolean) = Pager(PagingConfig(pageSize = 20)) {
+    fun getAllGifs(scope: CoroutineScope, isOnline: Boolean, onOffline: (Boolean) -> Unit) = Pager(PagingConfig(pageSize = 20)) {
         GifPagingSource(
             gifClient.gifService,
             getAllGifsDB(),
             isOnline
-        )
+        ) {
+            onOffline(it)
+        }
     }.flow.cachedIn(scope)
 
     fun getSearched(scope: CoroutineScope, text: String) = Pager(PagingConfig(pageSize = 20)) {

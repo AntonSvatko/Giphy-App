@@ -42,9 +42,6 @@ class GifPagingSourceSearch(
         }
     }
 
-    override val keyReuseSupported: Boolean
-        get() = true
-
     override fun getRefreshKey(state: PagingState<Int, Data>): Int? {
         return null
     }

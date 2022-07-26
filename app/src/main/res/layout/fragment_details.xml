@@ -7,6 +7,9 @@
         <variable
             name="isDownloaded"
             type="Boolean" />
+        <variable
+            name="viewModel"
+            type="com.test.giphy.ui.fragments.MainViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -53,7 +56,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_delete"
-                    android:visibility="@{isDownloaded ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{!viewModel.isOnline ? View.VISIBLE : View.GONE}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.cardview.widget.CardView>
 

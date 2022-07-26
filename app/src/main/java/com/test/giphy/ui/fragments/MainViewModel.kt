@@ -1,15 +1,14 @@
 package com.test.giphy.ui.fragments
 
 import android.graphics.drawable.Drawable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.filter
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.test.giphy.data.model.Data
 import com.test.giphy.data.repository.DataRepository
 import com.test.giphy.ui.base.viewmodel.CoroutineViewModel
-import com.test.giphy.utill.getSharedPref
 import com.test.giphy.utill.putSharedPref
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -27,22 +26,22 @@ class MainViewModel @Inject constructor(
 
     var listCreated: MutableLiveData<PagingData<Data>> = MutableLiveData()
     var lastSearch = ""
+    var isOnline = MutableLiveData<Boolean>()
 
 
     init {
-        update()
+        update ()
     }
 
     fun update(isOnline: Boolean = true) {
         launchSafely {
-            getGifs(isOnline).collectLatest {
+            repository.getAllGifs(viewModelScope, isOnline) {
+                this@MainViewModel.isOnline.value = it
+            }.flowOn(Dispatchers.IO).collectLatest {
                 listCreated.postValue(it)
             }
         }
     }
-
-    private fun getGifs(isOnline: Boolean) =
-        repository.getAllGifs(viewModelScope, isOnline).flowOn(Dispatchers.IO)
 
     private fun insertGif(data: Data) {
         data.isDownloaded = true
@@ -54,13 +53,13 @@ class MainViewModel @Inject constructor(
     fun deleteGif(dir: String, data: Data) {
         val name = data.id + ".gif"
         val file = File(dir, name)
-        launchSafely {
+        viewModelScope.launch(Dispatchers.IO) {
             if (file.exists())
                 file.delete()
             repository.deleteGif(data)
         }
         putSharedPref(data)
-        update(false)
+        update (true)
     }
 
     fun downloadGif(dir: String, drawable: Drawable?, data: Data) {

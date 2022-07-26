@@ -1,6 +1,7 @@
 package com.test.giphy.ui.adapter
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -27,8 +28,9 @@ class ViewPagerAdapter(
             binding.isImageVisible = false
             binding.pagerGifView.setGif(data)
 
-            binding.title.text = data.title
+            Log.d("data1", data.isDownloaded.toString())
 
+            binding.title.text = data.title
             binding.executePendingBindings()
         }
 
@@ -36,8 +38,8 @@ class ViewPagerAdapter(
             Glide.with(this).load(data.images?.original?.url)
                 .listener(GlideListener {
                     val dir = itemView.context.cacheDir.absolutePath
-                    binding.isImageVisible = true
                     onDownload(dir, it, data)
+                    binding.isImageVisible = true
                 }).into(this)
         }
     }
