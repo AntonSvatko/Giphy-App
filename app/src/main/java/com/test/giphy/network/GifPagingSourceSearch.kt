@@ -13,22 +13,18 @@ class GifPagingSourceSearch(
     private val text: String
 ) : PagingSource<Int, Data>() {
 
-    private var page: Int = 0
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Data> {
 
         return try {
             val nextPage = params.key ?: 0
             val response = photoApiService.fetchSearchGifs(offset = nextPage, text = text)
-            page = nextPage
 
             val blackList = getSharedPref()
             val listItem = response.data.filter {
                 !(blackList?.contains(it.id) ?: false)
             }
 
-
-            if (listItem.isEmpty() && page > 0)
+            if (listItem.isEmpty() && nextPage > 0)
                 LoadResult.Error(EmptyResultException())
             else
                 LoadResult.Page(

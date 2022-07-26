@@ -11,7 +11,7 @@ class GifPagingSource(
     private val photoApiService: GifService,
     private val source: PagingSource<Int, Data>,
     private val online: Boolean,
-    private val isOnline: (Boolean) -> Unit
+    private val isOnline: (Boolean) -> Boolean
 ) : PagingSource<Int, Data>() {
 
     private var page: Int = 0
@@ -40,7 +40,6 @@ class GifPagingSource(
                 source.load(params)
             }
         } catch (e: Exception) {
-            Log.d("Error1", e.toString())
             isOnline(false)
             source.load(params)
         }

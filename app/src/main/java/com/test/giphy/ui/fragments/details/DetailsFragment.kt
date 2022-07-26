@@ -9,29 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.FragmentDetailsBinding
 import com.test.giphy.ui.adapter.ViewPagerAdapter
+import com.test.giphy.ui.base.fragment.BaseFragment
 import com.test.giphy.ui.fragments.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment() {
-    private lateinit var binding: FragmentDetailsBinding
-
-    private val viewModel: MainViewModel by activityViewModels()
+class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_details) {
     private val args: DetailsFragmentArgs by navArgs()
     private lateinit var currentItem: Data
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDetailsBinding.inflate(inflater)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +51,6 @@ class DetailsFragment : Fragment() {
         }
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

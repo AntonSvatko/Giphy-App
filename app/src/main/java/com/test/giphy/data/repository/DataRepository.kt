@@ -5,14 +5,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.test.giphy.data.database.dao.GifDao
 import com.test.giphy.data.model.Data
-import com.test.giphy.network.GifClient
 import com.test.giphy.network.GifPagingSource
 import com.test.giphy.network.GifPagingSourceSearch
+import com.test.giphy.network.api.GifService
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
-    private val gifClient: GifClient,
+    private val gifService: GifService,
     private val gifDao: GifDao
 ) {
 
@@ -28,15 +28,16 @@ class DataRepository @Inject constructor(
 
     fun getAllGifs(scope: CoroutineScope, isOnline: Boolean, onOffline: (Boolean) -> Unit) = Pager(PagingConfig(pageSize = 20)) {
         GifPagingSource(
-            gifClient.gifService,
+            gifService,
             getAllGifsDB(),
             isOnline
         ) {
             onOffline(it)
+            isOnline
         }
     }.flow.cachedIn(scope)
 
     fun getSearched(scope: CoroutineScope, text: String) = Pager(PagingConfig(pageSize = 20)) {
-        GifPagingSourceSearch(gifClient.gifService, text)
+        GifPagingSourceSearch(gifService, text)
     }.flow.cachedIn(scope)
 }

@@ -1,43 +1,39 @@
 package com.test.giphy.ui.adapter
 
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemPagerBinding
+import com.test.giphy.ui.base.adapter.BaseAdapter
 import com.test.giphy.utill.glide.GlideListener
+import java.io.File
 
 class ViewPagerAdapter(
     private val onDownload: (String, Drawable?, Data) -> Unit
-) :
-    PagingDataAdapter<Data, ViewPagerAdapter.ViewPagerHolder>(
-        GifCallback()
-    ) {
+) : BaseAdapter() {
 
     inner class ViewPagerHolder(private val binding: ItemPagerBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        BaseHolder(binding) {
 
-        fun bind(data: Data) {
+        override fun bind(data: Data) {
             binding.isImageVisible = false
             binding.pagerGifView.setGif(data)
-
-            Log.d("data1", data.isDownloaded.toString())
 
             binding.title.text = data.title
             binding.executePendingBindings()
         }
 
         private fun ShapeableImageView.setGif(data: Data) {
-            Glide.with(this).load(data.images?.original?.url)
+            val dir = itemView.context.cacheDir.absolutePath
+            val load = if(data.isDownloaded) File(dir, data.id + ".gif") else data.images?.original?.url
+
+            Glide.with(this).load(load)
                 .listener(GlideListener {
-                    val dir = itemView.context.cacheDir.absolutePath
                     onDownload(dir, it, data)
                     binding.isImageVisible = true
                 }).into(this)
@@ -51,11 +47,5 @@ class ViewPagerAdapter(
             parent, false
         )
         return ViewPagerHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewPagerHolder, position: Int) {
-        val item = getItem(position)
-        if (item != null)
-            holder.bind(item)
     }
 }

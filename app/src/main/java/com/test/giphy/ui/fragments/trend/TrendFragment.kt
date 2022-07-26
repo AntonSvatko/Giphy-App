@@ -1,42 +1,26 @@
 package com.test.giphy.ui.fragments.trend
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.test.giphy.R
 import com.test.giphy.databinding.FragmentTrendBinding
 import com.test.giphy.ui.adapter.GifAdapter
-import com.test.giphy.ui.fragments.MainViewModel
+import com.test.giphy.ui.base.fragment.BaseFragment
 import com.test.giphy.utill.DebouncedQueryTextListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class TrendFragment : Fragment() {
-    private lateinit var binding: FragmentTrendBinding
-    private val viewModel: MainViewModel by activityViewModels()
-
+class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend) {
     private val adapter: GifAdapter by lazy {
         GifAdapter {
             val action = TrendFragmentDirections.actionTrendFragmentToDetailsFragment(it)
             findNavController().navigate(action)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentTrendBinding.inflate(inflater)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +30,6 @@ class TrendFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
             lifecycleScope.launch {
                 adapter.submitData(it)
-                adapter.notifyDataSetChanged()
             }
         }
 
@@ -54,7 +37,18 @@ class TrendFragment : Fragment() {
             viewModel.update()
         }
 
-        val last = true
+        binding.searchView.setOnQueryTextListener(object : DebouncedQueryTextListener() {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.debounceTextChange(newText ?: "")
+                return true
+            }
+        })
+
+        binding.recyclerView.adapter = adapter
+        snackBar()
+    }
+
+    private fun snackBar() {
         val snackBar = Snackbar.make(
             binding.root,
             getString(R.string.offline_mode),
@@ -67,14 +61,5 @@ class TrendFragment : Fragment() {
             else
                 snackBar.show()
         }
-
-        binding.searchView.setOnQueryTextListener(object : DebouncedQueryTextListener() {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.debounceTextChange(newText ?: "")
-                return true
-            }
-        })
-
-        binding.recyclerView.adapter = adapter
     }
 }
