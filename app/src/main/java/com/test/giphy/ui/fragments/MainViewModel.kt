@@ -1,13 +1,16 @@
-package com.test.giphy.ui.fragments.trend
+package com.test.giphy.ui.fragments
 
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.filter
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.test.giphy.data.model.Data
 import com.test.giphy.data.repository.DataRepository
 import com.test.giphy.ui.base.viewmodel.CoroutineViewModel
+import com.test.giphy.utill.getSharedPref
+import com.test.giphy.utill.putSharedPref
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
@@ -18,7 +21,7 @@ import java.nio.ByteBuffer
 import javax.inject.Inject
 
 @HiltViewModel
-class TrendViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val repository: DataRepository,
 ) : CoroutineViewModel() {
 
@@ -30,22 +33,34 @@ class TrendViewModel @Inject constructor(
         update()
     }
 
-    fun update() {
+    fun update(isOnline: Boolean = true) {
         launchSafely {
-            getGifs().collectLatest {
+            getGifs(isOnline).collectLatest {
                 listCreated.postValue(it)
             }
         }
     }
 
-    private fun getGifs() =
-        repository.getAllGifs(viewModelScope).flowOn(Dispatchers.IO)
+    private fun getGifs(isOnline: Boolean) =
+        repository.getAllGifs(viewModelScope, isOnline).flowOn(Dispatchers.IO)
 
-    fun insertGif(data: Data) {
+    private fun insertGif(data: Data) {
         data.isDownloaded = true
         launchSafely {
             repository.insertGif(data)
         }
+    }
+
+    fun deleteGif(dir: String, data: Data) {
+        val name = data.id + ".gif"
+        val file = File(dir, name)
+        launchSafely {
+            if (file.exists())
+                file.delete()
+            repository.deleteGif(data)
+        }
+        putSharedPref(data)
+        update(false)
     }
 
     fun downloadGif(dir: String, drawable: Drawable?, data: Data) {

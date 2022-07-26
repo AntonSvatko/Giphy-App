@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.test.giphy.data.model.Data
-import com.test.giphy.data.model.Gif
 import com.test.giphy.network.api.GifService
+import com.test.giphy.utill.getSharedPref
 
 class GifPagingSource(
     private val photoApiService: GifService,
     private val source: PagingSource<Int, Data>,
+    private val online: Boolean
 ) : PagingSource<Int, Data>() {
 
     private var page: Int = 0
@@ -20,13 +21,19 @@ class GifPagingSource(
             val response = photoApiService.fetchGifs(offset = nextPage)
             page = nextPage
 
-            val listItem = response.data
+            val blackList = getSharedPref()
+            val listItem = response.data.filter {
+                !(blackList?.contains(it.id) ?: false)
+            }
 
-            LoadResult.Page(
-                data = listItem,
-                prevKey = if (nextPage == 0) null else nextPage - 1,
-                nextKey = nextPage + 20
-            )
+            if (online)
+                LoadResult.Page(
+                    data = listItem,
+                    prevKey = if (nextPage == 0) null else nextPage - 1,
+                    nextKey = nextPage + 20
+                )
+            else
+                source.load(params)
         } catch (e: Exception) {
             Log.d("Error1", e.toString())
             source.load(params)

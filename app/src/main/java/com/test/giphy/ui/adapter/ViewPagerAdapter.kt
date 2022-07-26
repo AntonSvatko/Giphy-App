@@ -36,8 +36,8 @@ class ViewPagerAdapter(
             Glide.with(this).load(data.images?.original?.url)
                 .listener(GlideListener {
                     val dir = itemView.context.cacheDir.absolutePath
-                    onDownload(dir, it, data)
                     binding.isImageVisible = true
+                    onDownload(dir, it, data)
                 }).into(this)
         }
     }

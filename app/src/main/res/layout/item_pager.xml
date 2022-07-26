@@ -45,6 +45,5 @@
                 android:textSize="20sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </FrameLayout>
 </layout>

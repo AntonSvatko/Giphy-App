@@ -1,5 +1,9 @@
 package com.test.giphy.utill
 
+import com.test.giphy.App
+import com.test.giphy.App.Companion.BLACK_LIST_KEY
+import com.test.giphy.App.Companion.sharedPref
+import com.test.giphy.data.model.Data
 import kotlinx.coroutines.CoroutineExceptionHandler
 
 
@@ -21,3 +25,13 @@ inline fun createCoroutineHandler(crossinline onError: (Throwable?) -> Unit) =
 //        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 //    }
 //}
+
+fun getSharedPref() =
+    sharedPref?.getStringSet(BLACK_LIST_KEY, null)?.toMutableSet()
+
+fun putSharedPref(data: Data) {
+    val setData = getSharedPref()?: mutableSetOf()
+    setData.add(data.id)
+
+    sharedPref?.edit()?.putStringSet(BLACK_LIST_KEY, setData)?.apply()
+}

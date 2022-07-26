@@ -16,16 +16,19 @@ class DataRepository @Inject constructor(
 
     suspend fun insertGif(data: Data) = gifDao.insertData(data)
 
+    suspend fun deleteGif(data: Data) = gifDao.deleteData(data)
+
     suspend fun updateFavorite(data: Data) = gifDao.updateData(data)
 
     suspend fun getFavorite(id: String) = gifDao.getData(id)
 
     private fun getAllGifsDB() = gifDao.getAllGifsLiveData()
 
-    fun getAllGifs(scope: CoroutineScope) = Pager(PagingConfig(pageSize = 20)) {
+    fun getAllGifs(scope: CoroutineScope, isOnline: Boolean) = Pager(PagingConfig(pageSize = 20)) {
         GifPagingSource(
             gifClient.gifService,
-            getAllGifsDB()
+            getAllGifsDB(),
+            isOnline
         )
     }.flow.cachedIn(scope)
 

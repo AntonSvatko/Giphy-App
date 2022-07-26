@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="isDownloaded"
             type="Boolean" />
@@ -13,7 +14,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black">
+        android:background="@color/black"
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/main_toolbar"
@@ -49,9 +51,9 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:visibility="@{isDownloaded ? View.VISIBLE : View.GONE}"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/ic_delete" />
+                    android:background="@drawable/ic_delete"
+                    android:visibility="@{isDownloaded ? View.VISIBLE : View.GONE}" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.cardview.widget.CardView>
 
