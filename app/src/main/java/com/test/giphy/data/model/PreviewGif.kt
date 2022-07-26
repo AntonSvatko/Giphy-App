@@ -1,11 +1,13 @@
 package com.test.giphy.data.model
 
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PreviewGif(
-    val height: String,
-    val size: String,
-    val url: String,
-    val width: String
-)
+    var height: String ="",
+    var size: String ="",
+    var url: String ="",
+    var width: String =""
+): Parcelable

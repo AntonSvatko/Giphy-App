@@ -1,11 +1,14 @@
 package com.test.giphy.data.model
 
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "gif_table")
 data class Data(
-    val id: String,
-    val images: Images,
-    val title: String,
-    val url: String,
+    @PrimaryKey
+    var id: String = "",
+    var images: Images? = null,
+    var title: String = "",
+    var isDownloaded: Boolean = false
 )

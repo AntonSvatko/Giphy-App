@@ -1,15 +1,18 @@
 package com.test.giphy.ui.fragments.trend
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.test.giphy.databinding.FragmentTrendBinding
 import com.test.giphy.ui.adapter.GifAdapter
+import com.test.giphy.utill.DebouncedQueryTextListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,6 +48,18 @@ class TrendFragment : Fragment() {
                 adapter.submitData(it)
             }
         }
+
+        binding.textRefresh.setOnClickListener {
+            viewModel.update()
+        }
+
+        binding.searchView.setOnQueryTextListener(object : DebouncedQueryTextListener() {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.debounceTextChange(newText ?: "")
+                return true
+            }
+        })
+
         binding.recyclerView.adapter = adapter
     }
 }

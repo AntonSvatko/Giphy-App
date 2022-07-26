@@ -1,10 +1,6 @@
 package com.test.giphy.utill
 
-import android.app.Activity
-import android.graphics.Bitmap
 import kotlinx.coroutines.CoroutineExceptionHandler
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 inline fun createCoroutineHandler(crossinline onError: (Throwable?) -> Unit) =
@@ -12,14 +8,16 @@ inline fun createCoroutineHandler(crossinline onError: (Throwable?) -> Unit) =
         onError(throwable)
     }
 
-
-//fun Activity.saveBitmap(bitmap: Bitmap){
+//fun bindFailedToast(progressBar: ProgressBar, throwable: Throwable?) {
+//    throwable?.let {
+//        val context = progressBar.context
+//        val resources = context.resources
 //
-//    try {
-//        FileOutputStream(filename).use { out ->
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, out) // bmp is your Bitmap instance
+//        val text = when (it) {
+//            is NoConnectivityException -> resources.getString(R.string.failed_connection)
+//            else -> resources.getString(R.string.failed_to_load)
 //        }
-//    } catch (e: IOException) {
-//        e.printStackTrace()
+//
+//        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 //    }
 //}

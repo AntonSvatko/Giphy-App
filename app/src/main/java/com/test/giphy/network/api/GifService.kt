@@ -8,23 +8,17 @@ import retrofit2.http.Query
 interface GifService {
 
     @GET("/v1/gifs/trending")
-    suspend fun fetchPhotos(
+    suspend fun fetchGifs(
         @Query("api_key") apiKey: String = ApiConstants.API_KEY,
         @Query("offset") offset: Int = 0,
         @Query("limit") limit: Int = 20
-//        @Query("extras") extras: String = PHOTO_EXTRAS
     ): Gif
 
-//    @GET("/services/rest/")
-//    suspend fun fetchSizes(
-//        @Query("photo_id") id: String,
-//        @Query("method") method: String = PHOTO_SIZES_METHOD
-//    ): ResponseSize
-
-
-    companion object {
-        private const val PHOTOS_LIST_METHOD = "flickr.interestingness.getList"
-
-        private const val PHOTO_EXTRAS = "url_s"
-    }
+    @GET("/v1/gifs/search")
+    suspend fun fetchSearchGifs(
+        @Query("api_key") apiKey: String = ApiConstants.API_KEY,
+        @Query("offset") offset: Int = 0,
+        @Query("limit") limit: Int = 20,
+        @Query("q") text: String
+    ): Gif
 }

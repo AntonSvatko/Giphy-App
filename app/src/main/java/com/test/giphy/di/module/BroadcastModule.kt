@@ -1,4 +1,4 @@
-package com.test.giphy.di
+package com.test.giphy.di.module
 
 import android.content.Context
 import androidx.localbroadcastmanager.content.LocalBroadcastManager

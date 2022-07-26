@@ -1,19 +1,13 @@
 package com.test.giphy.data.model
 
 
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Original(
-    val frames: String,
-    val hash: String,
-    val height: String,
-    val mp4: String,
-    @SerializedName("mp4_size")
-    val mp4Size: String,
-    val size: String,
-    val url: String,
-    val webp: String,
-    @SerializedName("webp_size")
-    val webpSize: String,
-    val width: String
-)
+    var height: String ="",
+    var size: String ="",
+    var url: String ="",
+    var width: String =""
+): Parcelable

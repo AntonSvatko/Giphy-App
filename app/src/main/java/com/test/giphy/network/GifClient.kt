@@ -12,7 +12,7 @@ class GifClient @Inject constructor(
 ) {
 
     suspend fun fetchGif(): ResultOf<List<Data>> {
-        val data = gifService.fetchPhotos()
+        val data = gifService.fetchGifs()
         return if (data.meta.msg == ApiConstants.API_OK)
             ResultOf.Success(data.data) else errorResponse(data.meta.msg)
     }

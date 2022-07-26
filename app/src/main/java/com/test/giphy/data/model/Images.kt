@@ -1,10 +1,13 @@
 package com.test.giphy.data.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Images(
-    val original: Original,
-    @SerializedName("original_mp4")
-    val previewGif: PreviewGif,
-)
+    var original: Original? = null,
+    @SerializedName("preview_gif")
+    var previewGif: PreviewGif? = null,
+): Parcelable

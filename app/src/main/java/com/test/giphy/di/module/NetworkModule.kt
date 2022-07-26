@@ -1,4 +1,4 @@
-package com.test.giphy.di
+package com.test.giphy.di.module
 
 import android.util.Log
 import com.google.gson.Gson

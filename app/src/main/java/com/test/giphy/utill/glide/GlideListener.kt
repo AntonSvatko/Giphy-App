@@ -1,4 +1,4 @@
-package com.test.giphy.ui.adapter.glide
+package com.test.giphy.utill.glide
 
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.load.DataSource

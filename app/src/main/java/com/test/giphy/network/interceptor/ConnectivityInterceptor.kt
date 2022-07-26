@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.test.giphy.network.exception.NoConnectivityException
+import com.test.giphy.network.exception.EmptyResultException
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -13,7 +13,7 @@ class ConnectivityInterceptor(
     private val context: Context
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        return if (isNetworkConnected()) chain.proceed(chain.request()) else throw NoConnectivityException()
+        return if (isNetworkConnected()) chain.proceed(chain.request()) else throw EmptyResultException()
     }
 
     private fun isNetworkConnected(): Boolean {

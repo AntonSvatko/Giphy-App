@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Giphy App</string>
+    <string name="failed_to_load">Failed to load</string>
 </resources>

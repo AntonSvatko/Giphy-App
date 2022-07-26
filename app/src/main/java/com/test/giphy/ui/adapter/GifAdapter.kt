@@ -1,5 +1,6 @@
 package com.test.giphy.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,7 +12,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.test.giphy.R
 import com.test.giphy.data.model.Data
 import com.test.giphy.databinding.ItemGifBinding
-import com.test.giphy.ui.adapter.glide.GlideListener
+import com.test.giphy.utill.glide.GlideListener
 
 
 class GifAdapter(
@@ -26,6 +27,8 @@ class GifAdapter(
             binding.isImageVisible = false
             binding.gifView.setGif(data)
 
+            Log.d("work1", "salda")
+
             binding.gifView.setOnClickListener {
                 callback(absoluteAdapterPosition)
             }
@@ -34,7 +37,7 @@ class GifAdapter(
         }
 
         private fun ShapeableImageView.setGif(gif: Data) {
-            Glide.with(this).load(gif.images.previewGif.url)
+            Glide.with(context).load(gif.images?.previewGif?.url)
                 .listener(GlideListener {
                     binding.isImageVisible = true
                 }).centerCrop().into(this)
