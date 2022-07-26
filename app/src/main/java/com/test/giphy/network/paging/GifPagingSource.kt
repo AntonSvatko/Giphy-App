@@ -1,10 +1,11 @@
-package com.test.giphy.network
+package com.test.giphy.network.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.test.giphy.data.model.Data
 import com.test.giphy.network.api.GifService
+import com.test.giphy.network.const.ApiConstants
+import com.test.giphy.ui.base.paging.BasePagingSource
 import com.test.giphy.utill.getSharedPref
 
 class GifPagingSource(
@@ -12,40 +13,22 @@ class GifPagingSource(
     private val source: PagingSource<Int, Data>,
     private val online: Boolean,
     private val isOnline: (Boolean) -> Boolean
-) : PagingSource<Int, Data>() {
-
-    private var page: Int = 0
-
+) : BasePagingSource() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Data> {
         return try {
             val nextPage = params.key ?: 0
             val response = photoApiService.fetchGifs(offset = nextPage)
-            page = nextPage
 
-            val blackList = getSharedPref()
-            val listItem = response.data.filter {
-                !(blackList?.contains(it.id) ?: false)
-            }
+            val listItem = blackList(response)
 
-            if (online) {
-                isOnline(true)
-                LoadResult.Page(
-                    data = listItem,
-                    prevKey = if (nextPage == 0) null else nextPage - 1,
-                    nextKey = nextPage + 20
-                )
-            }
-            else {
-                isOnline(false)
+            isOnline(online)
+            if (online)
+                loadResult(listItem, nextPage)
+            else
                 source.load(params)
-            }
         } catch (e: Exception) {
             isOnline(false)
             source.load(params)
         }
-    }
-
-    override fun getRefreshKey(state: PagingState<Int, Data>): Int? {
-        return null
     }
 }

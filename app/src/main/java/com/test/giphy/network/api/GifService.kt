@@ -11,14 +11,14 @@ interface GifService {
     suspend fun fetchGifs(
         @Query("api_key") apiKey: String = ApiConstants.API_KEY,
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 20
+        @Query("limit") limit: Int = ApiConstants.API_PAGE_SIZE
     ): Gif
 
     @GET("/v1/gifs/search")
     suspend fun fetchSearchGifs(
         @Query("api_key") apiKey: String = ApiConstants.API_KEY,
         @Query("offset") offset: Int = 0,
-        @Query("limit") limit: Int = 20,
+        @Query("limit") limit: Int = ApiConstants.API_PAGE_SIZE,
         @Query("q") text: String
     ): Gif
 }

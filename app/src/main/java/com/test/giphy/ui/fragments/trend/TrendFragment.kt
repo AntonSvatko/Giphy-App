@@ -30,10 +30,11 @@ class TrendFragment : BaseFragment<FragmentTrendBinding>(R.layout.fragment_trend
             binding.progressBar.visibility = View.GONE
             lifecycleScope.launch {
                 adapter.submitData(it)
+                binding.swipeRefresh.isRefreshing = false
             }
         }
 
-        binding.textRefresh.setOnClickListener {
+        binding.swipeRefresh.setOnRefreshListener {
             viewModel.update()
         }
 

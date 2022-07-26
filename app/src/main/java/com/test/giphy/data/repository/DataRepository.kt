@@ -5,8 +5,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.test.giphy.data.database.dao.GifDao
 import com.test.giphy.data.model.Data
-import com.test.giphy.network.GifPagingSource
-import com.test.giphy.network.GifPagingSourceSearch
+import com.test.giphy.network.paging.GifPagingSource
+import com.test.giphy.network.paging.GifPagingSourceSearch
 import com.test.giphy.network.api.GifService
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
