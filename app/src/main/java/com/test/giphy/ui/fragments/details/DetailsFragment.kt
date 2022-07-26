@@ -34,7 +34,8 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(R.layout.fragment_d
 
         binding.delete.setOnClickListener {
             currentItem?.let { item ->
-                viewModel.deleteGif(requireContext().cacheDir.absolutePath,
+                viewModel.deleteGif(
+                    requireContext().cacheDir.absolutePath,
                     item
                 )
             }

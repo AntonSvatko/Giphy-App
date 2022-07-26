@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
             repository.deleteGif(data)
         }
         putSharedPref(data)
-        update (true)
+        update (false)
     }
 
     fun downloadGif(dir: String, drawable: Drawable?, data: Data) {
