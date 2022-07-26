@@ -17,4 +17,6 @@ class App: Application() {
         var sharedPref: SharedPreferences? = null
         const val BLACK_LIST_KEY: String = "black_list"
     }
+
+
 }
